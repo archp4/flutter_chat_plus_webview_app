@@ -1,0 +1,44 @@
+<div class="p-6 bg-white shadow rounded-lg">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Knowledgebase Editor</h2>
+
+    <div class="mb-4 border-b border-gray-200">
+        <nav class="flex space-x-2">
+            <button (click)="currentView = 'edit'"
+                class="pb-2 text-sm font-medium transition duration-150 ease-in-out border-b-2"
+                [ngClass]="currentView === 'edit' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300'">
+                Editor
+            </button>
+            <button (click)="currentView = 'preview'"
+                class="pb-2 text-sm font-medium transition duration-150 ease-in-out border-b-2"
+                [ngClass]="currentView === 'preview' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300'">
+                Preview
+            </button>
+        </nav>
+    </div>
+
+    <div class="relative">
+        @if( currentView === 'edit'){
+        <textarea [(ngModel)]="editorContent" rows="15"
+            class="w-full p-4 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 font-mono"
+            placeholder="Start typing your article..."></textarea>
+        }
+
+        @if (currentView === 'preview'){
+        <div class="p-4 border border-gray-300 rounded-lg bg-gray-50 prose max-w-none">
+            <pre class="whitespace-pre-wrap">{{ editorContent }}</pre>
+        </div>
+        }
+
+
+    </div>
+
+    <div class="flex items-center justify-between mt-4">
+        <button (click)="saveArticle()"
+            class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition duration-150">
+            Save Article
+        </button>
+        @if( saveStatus ) {
+        <p class="text-green-600 text-sm font-medium">{{ saveStatus }}</p>
+        }
+    </div>
+</div>

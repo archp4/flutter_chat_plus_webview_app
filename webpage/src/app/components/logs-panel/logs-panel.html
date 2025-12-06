@@ -1,0 +1,12 @@
+<div class="h-96 bg-gray-900 shadow rounded-lg flex flex-col p-4">
+    <h2 class="text-2xl font-semibold text-green-400 mb-4">Log Panel</h2>
+
+    <div #logsContainer
+        class="h-full overflow-y-scroll bg-gray-800 text-sm text-gray-300 rounded-lg font-mono leading-relaxed p-2">
+        <div *ngFor="let log of logs"
+            [ngClass]="{'text-yellow-400': log.includes('[WARN]'), 'text-red-400': log.includes('[ERROR]')}"
+            class="whitespace-pre-wrap">
+            {{ log }}
+        </div>
+    </div>
+</div>
