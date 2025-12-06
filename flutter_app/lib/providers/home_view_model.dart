@@ -21,7 +21,7 @@ class HomeViewModel extends ChangeNotifier {
     "We are looking into your query.",
     "Thanks for reaching out to us.",
   ];
-
+  final ScrollController scrollController = ScrollController();
   final MessageStorageService _storageService = MessageStorageService();
   bool _isPersistenceEnabled = false;
 
@@ -36,7 +36,21 @@ class HomeViewModel extends ChangeNotifier {
     if (_isPersistenceEnabled) {
       _messages.addAll(await _storageService.loadMessages());
     }
+
     notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+    });
+  }
+
+  void _scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   set isPersistenceEnabled(bool value) {
@@ -104,12 +118,17 @@ class HomeViewModel extends ChangeNotifier {
         if (_isPersistenceEnabled) _storageService.saveMessages(_messages);
         notifyListeners();
       });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollToBottom();
+      });
+      notifyListeners();
     }
   }
 
   @override
   void dispose() {
     messageController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 }
